@@ -26,7 +26,7 @@ public class UdpServer {
     }
     while (true) {
       try {
-        // Receive a datagram from a client (any client)
+        // Receive a datagram from a jclient (any client)
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         serverSocket.receive(receivePacket);
         String sentence = new String(receivePacket.getData(), 0, receivePacket.getLength());
