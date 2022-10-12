@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.Scanner;
 
 /**
  * Communicate with the UDP task server, solve the problems according to the protocol
@@ -28,30 +29,37 @@ public class UdpSocketHandler {
   byte[] responseDataBuffer = new byte[1024]; // Reserve a bit more space than one would normally need
   // We will reuse this packet for incoming UDP packets
   DatagramPacket receivePacket = new DatagramPacket(responseDataBuffer, responseDataBuffer.length);
-
   /**
    * Communicate with the UDP server according to the protocol
    */
   public void run() {
-    System.out.println("Starting UDP socket handler");
-       for (int i = 0; i < 3; ++i) {
-    if (sendTaskRequest()) {
-      System.out.println("Task request sent successfully");
-      String task = listenForResponse();
-      System.out.println("Got the following task from the server: " + task);
-      String answer = TaskLogic.solveTask(task);
-      if (answer != null) {
-        System.out.println("Our answer is " + answer);
-        sendToServer(answer);
-        String response = listenForResponse();
-        if (TaskLogic.hasServerApproved(response)) {
-          System.out.println("Good, task solved!");
-        } else {
-          System.out.println("Oops, something wrong, server said: " + response);
-        }
+    try {
+      clientSocket = new DatagramSocket();
+    } catch (Exception e) {
+      System.out.println("Something went wrong " + e);
+    }
+    Scanner scanner = new Scanner(System.in);
+  while (true) {
+    System.out.println("Starting UDP socket handler. Write 'task' to get a task: ");
+    scanner.nextLine();
+  if (sendTaskRequest()) {
+    System.out.println("Task request sent successfully");
+    String task = listenForResponse();
+    System.out.println("Got the following task from the server: " + task);
+    String answer = TaskLogic.solveTask(task);
+    if (answer != null) {
+      System.out.println("Our answer is " + answer);
+      sendToServer(answer);
+      String response = listenForResponse();
+      if (TaskLogic.hasServerApproved(response)) {
+        System.out.println("Good, task solved!");
+      } else {
+        System.out.println("Oops, something wrong, server said: " + response);
       }
     }
-        }
+  }
+  System.out.println(" ");
+}
   }
 
 
@@ -95,7 +103,6 @@ public class UdpSocketHandler {
     // https://github.com/ntnu-datakomm/server-side/blob/main/example-udp-server/src/main/java/no/ntnu/UdpClient.java
     byte[] dataToSend = message.getBytes();
     try {
-      clientSocket = new DatagramSocket();
       InetAddress serverAddress = InetAddress.getByName(SERVER_IP_ADDRESS);
       DatagramPacket sendPacket = new DatagramPacket(dataToSend, dataToSend.length, serverAddress, SERVER_UDP_PORT);
       clientSocket.send(sendPacket);
