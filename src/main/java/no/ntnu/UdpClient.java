@@ -38,9 +38,13 @@ class UdpClient {
       // ever established. The .close() is more for releasing the memory which is not needed anymore
       clientSocket.close();
 
-      System.out.println("Response from the server: " + modifiedSentence);
+      System.out.println("Response from the server: " + modifiedSentence + " Statement1");
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  public void containsQuestionMark() {
+
   }
 }
