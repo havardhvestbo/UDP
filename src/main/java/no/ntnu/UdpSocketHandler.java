@@ -13,6 +13,7 @@ import java.net.SocketException;
  */
 public class UdpSocketHandler {
   /**
+   *
    * IP address of the UDP task server
    */
   public static final String SERVER_IP_ADDRESS = "129.241.152.12";
@@ -33,7 +34,7 @@ public class UdpSocketHandler {
    */
   public void run() {
     System.out.println("Starting UDP socket handler");
-//        for (int i = 0; i < 3; ++i) {
+       for (int i = 0; i < 3; ++i) {
     if (sendTaskRequest()) {
       System.out.println("Task request sent successfully");
       String task = listenForResponse();
@@ -50,7 +51,7 @@ public class UdpSocketHandler {
         }
       }
     }
-//        }
+        }
   }
 
 

@@ -43,8 +43,4 @@ class UdpClient {
       throw new RuntimeException(e);
     }
   }
-
-  public void containsQuestionMark() {
-
-  }
 }
