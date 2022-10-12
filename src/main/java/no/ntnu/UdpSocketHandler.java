@@ -41,8 +41,8 @@ public class UdpSocketHandler {
     Scanner scanner = new Scanner(System.in);
   while (true) {
     System.out.println("Starting UDP socket handler. Write 'task' to get a task: ");
-    scanner.nextLine();
-  if (sendTaskRequest()) {
+    String userInput = scanner.nextLine();
+  if (sendTaskRequest() && userInput.equals("task")) {
     System.out.println("Task request sent successfully");
     String task = listenForResponse();
     System.out.println("Got the following task from the server: " + task);
